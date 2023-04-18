@@ -9,11 +9,6 @@ public class App {
 
     public static void main(String[] args) {
 
-//        Stwórz w klasie App stałą ROUNDS o wartości 4.
-//        Przeiteruj od 1 do ROUNDS, w każdej iteracji wypisz „Rozpoczęła się runda <numer aktualnej rundy>”
-//        W każdej rundzie przeiteruj po liście graczy (utworzonej w porzedniej user story) i wypisz komunikat „Tura gracza <imie>”
-//        Utwórz Pull Request na GitHub.
-
         System.out.println("Witaj w Kole Fortuny");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Podaj liczbę graczy (2,3,4): ");
@@ -42,9 +37,9 @@ public class App {
 
         PasswordManager passwordManager = new PasswordManager();
         for (int i = 1; i <= ROUNDS; i++) {
-            passwordManager.getRandomPassword();
             System.out.println("Rozpoczęła się runda " + i);
-            players.forEach(p -> System.out.println("Tura graca " + p.getName()));
+            System.out.println("\t\t\t" + passwordManager.getRandomPassword());
+            players.forEach(p -> System.out.println("Tura gracza " + p.getName()));
         }
 
     }

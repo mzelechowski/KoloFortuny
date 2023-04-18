@@ -1,25 +1,30 @@
 package com.lomianki;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PasswordManager {
-//
-//    Utwórz klasę PasswordManager, z jednym pole – listą stringów o nazwie passwords.
-//    Utwórz bezargumentowy konstruktor, w którym do listy dodasz kilka przysłów, np.: „Apetyt rośnie w miarę jedzenia”, „Co dwie głowy, to nie jedna”, „Cwiczenie czyni mistrza”, „Darowanemu koniowi w zęby się nie zagląda”, „Diabeł tkwi w szczegółach”, „Elektryka prąd nie tyka”
-//    Utwórz metodę getRandomPassword, która zwróci losowo wybrane hasło z listy.
-//    Utwórz nowy obiekt klasy PasswordManager w metodzie main klas App. Na początku każdej rundy wyświetl losowo wybrane hasło.
-//
+
     private List<String> passwords;
 
-    public PasswordManager() {
-        passwords= Arrays.asList("Apetyt rośnie w miarę jedzenia", "Co dwie głowy, to nie jedna"
-                ,"Cwiczenie czyni mistrza", "Darowanemu koniowi w zęby się nie zagląda", "Diabeł tkwi w szczegółach"
-                , "Elektryka prąd nie tyka");
+    public List<String> getPasswords() {
+        return passwords;
     }
 
-    public void getRandomPassword(){
-        System.out.println(passwords.get((int) Math.floor((Math.random()* passwords.size()))));
+    public PasswordManager() {
+        passwords = new ArrayList<>(Arrays.asList("Apetyt rośnie w miarę jedzenia" , "Co dwie głowy, to nie jedna"
+                , "Cwiczenie czyni mistrza" , "Darowanemu koniowi w zęby się nie zagląda" , "Diabeł tkwi w szczegółach"
+                , "Elektryka prąd nie tyka"));
+    }
+
+    public String getRandomPassword() {
+        if (passwords.size() == 0)
+            throw new IllegalStateException("Brak unikalnego hasła");
+        int randomIndex = (int) Math.floor((Math.random() * passwords.size()));
+        String randomPassword = passwords.get(randomIndex);
+        passwords.remove(randomIndex);
+        return randomPassword;
     }
 
 
