@@ -40,7 +40,9 @@ public class App {
         }
         scanner.close();
 
+        PasswordManager passwordManager = new PasswordManager();
         for (int i = 1; i <= ROUNDS; i++) {
+            passwordManager.getRandomPassword();
             System.out.println("Rozpoczęła się runda " + i);
             players.forEach(p -> System.out.println("Tura graca " + p.getName()));
         }
