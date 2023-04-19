@@ -34,10 +34,12 @@ class PlayerTest {
     void testToString(){
         //given
         Player player = new Player("Maciek");
-        String answer="[<"+player.getName()+">]";
+        String answer="[<"+player.getName()+">]" + " zodobyl punktów: "+ player.getPoints();
         String output=player.toString();
 
         //then
         assertEquals(answer,output);
     }
+
+
 }

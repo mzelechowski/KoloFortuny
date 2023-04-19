@@ -1,6 +1,5 @@
 package com.lomianki;
 
-import javax.security.auth.callback.CallbackHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +15,8 @@ public class PasswordManager {
     }
 
     public PasswordManager() {
-        passwords = new ArrayList<>(Arrays.asList("Apetyt rośnie w miarę jedzenia" , "Co dwie głowy, to nie jedna"
-                , "Cwiczenie czyni mistrza" , "Darowanemu koniowi w zęby się nie zagląda" , "Diabeł tkwi w szczegółach"
+        passwords = new ArrayList<>(Arrays.asList("Apetyt rośnie w miarę jedzenia", "Co dwie głowy, to nie jedna"
+                , "Cwiczenie czyni mistrza", "Darowanemu koniowi w zęby się nie zagląda", "Diabeł tkwi w szczegółach"
                 , "Elektryka prąd nie tyka"));
     }
 
@@ -37,16 +36,20 @@ public class PasswordManager {
     }
 
     public void setCorrectGuesses(Character... args) {
-        for (Character c : args) {
-            this.correctGuesses.add(c);
+        for (Character a : args) {
+            this.correctGuesses.add(a);
         }
     }
 
     public int guessLetter(char letter) {
         int count = 0;
+        if(correctGuesses.contains(Character.toLowerCase(letter))){
+            System.out.println("Taka litera jest już na tablicy");
+            return 0;
+        }
         if (currentPassword.toLowerCase().contains(String.valueOf(letter).toLowerCase())) {
             System.out.println("Zgadnięta :D)");
-            this.correctGuesses.add(letter);
+            this.correctGuesses.add(Character.toLowerCase(letter));
             count = (int) currentPassword.chars().filter(ch -> ch == letter).count();
         } else {
             System.out.println("Taka litera nie występuje w haśle :(");
@@ -82,4 +85,7 @@ public class PasswordManager {
         return obPwd.toString();
     }
 
+    public boolean checkPassword() {
+        return currentPassword.equals(getObscuredPassword());
+    }
 }

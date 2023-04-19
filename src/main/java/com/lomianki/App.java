@@ -1,11 +1,10 @@
 package com.lomianki;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
     private static final int ROUNDS = 4;
+    private static final int POINTS_PER_GUESS = 10;
 
     public static void main(String[] args) {
         try {
@@ -31,14 +30,15 @@ public class App {
                 players.add(new Player(input));
             }
 
+            boolean goOn;
             PasswordManager passwordManager = new PasswordManager();
             for (int i = 1; i <= ROUNDS; i++) {
+                goOn = true;
                 System.out.println("Rozpoczęła się runda " + i);
                 //String passwordToGuess = passwordManager.getRandomPassword();
                 passwordManager.getRandomPassword();
-                for (int j = 0; j < 7; j++) {
-                     for (Player p : players) {
-                        // System.out.println("\t\t\t" + passwordToGuess);
+                while (goOn) {
+                    for (Player p : players) {
                         System.out.println("\t\t\t" + passwordManager.getObscuredPassword());
                         System.out.println("Tura gracza " + p.getName());
                         System.out.println("Podaj hasło lub literkę: ");
@@ -47,14 +47,29 @@ public class App {
                             System.out.println("Nie podałeś hasła ani literki. Rezygnujesz z tury.");
                         } else if (input.length() == 1) {
                             System.out.println("Zgaduję literę");
-                            passwordManager.guessLetter(input.charAt(0));
+                            p.addPoint(passwordManager.guessLetter(input.charAt(0)) * POINTS_PER_GUESS);
                         } else {
                             System.out.println("Zgaduję hasło");
-                            passwordManager.guessPassword(input);
+                            if (passwordManager.guessPassword(input)) {
+                                p.addPoint((int) (passwordManager.getObscuredPassword()
+                                        .chars().filter(ch -> ch == '-').count() * POINTS_PER_GUESS));
+                                goOn = false;
+                                break;
+                            }
+                        }
+                        if (passwordManager.checkPassword()) {
+                            System.out.println("\t\t\t" + passwordManager.getObscuredPassword());
+                            goOn = false;
+                            break;
                         }
                     }
                 }
+                Collections.sort(players);
+                for (Player p : players) {
+                    System.out.println(p);
+                }
             }
+
             scanner.close();
         } catch (NumberFormatException nfe) {
             System.out.println("NumberFormat Exception: invalid input string");

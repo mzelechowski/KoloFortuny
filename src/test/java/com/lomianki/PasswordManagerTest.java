@@ -61,6 +61,22 @@ class PasswordManagerTest {
     }
 
     @Test
+    void checkGuessLetterReturnZeroIfDuplicateLetterOnGuessLetter() {
+        //given
+        PasswordManager manager = new PasswordManager();
+
+
+        //when
+        manager.setCurrentPassword("Gdzie kucharek sześć tam nie ma co jeść");
+        manager.setCorrectGuesses('a', 'd', 'c', 'k');
+        char letter = 'c';
+
+        //then
+        assertThat(manager.guessLetter(letter), equalTo(0));
+    }
+
+
+    @Test
     void checkGuessPasswordIfReturnTrue() {
         //given
         PasswordManager manager = new PasswordManager();
@@ -100,6 +116,18 @@ class PasswordManagerTest {
     }
 
     @Test
+    void obscuredPasswordShouldNotContainHiddenLetter() {
+        //given
+        PasswordManager manager = new PasswordManager();
+
+        //when
+        manager.setCurrentPassword(" , , , ");
+
+        //then
+        assertFalse(manager.getObscuredPassword().contains("-"));
+    }
+
+    @Test
     void checkIfObscuredPasswordNotContainHiddenLetter() {
         //given
         PasswordManager manager = new PasswordManager();
@@ -111,5 +139,34 @@ class PasswordManagerTest {
         //then
         assertFalse(manager.getObscuredPassword().contains("-"));
     }
+
+    @Test
+    void checkIfCheckPasswordReturnTrue() {
+        //given
+        PasswordManager manager = new PasswordManager();
+
+        //when
+        manager.setCurrentPassword("Abc do efgh");
+        manager.setCorrectGuesses('a', 'b', 'c', 'd', 'o', 'e', 'f', 'g', 'h');
+        manager.getObscuredPassword();
+
+        //then
+        assertTrue(manager.checkPassword());
+    }
+
+    @Test
+    void checkIfCheckPasswordReturnFalse() {
+        //given
+        PasswordManager manager = new PasswordManager();
+
+        //when
+        manager.setCurrentPassword("Zxy do efgh");
+        manager.setCorrectGuesses('a', 'b', 'c', 'd', 'o', 'e', 'f', 'g', 'h');
+        manager.getObscuredPassword();
+
+        //then
+        assertFalse(manager.checkPassword());
+    }
+
 
 }
