@@ -16,7 +16,7 @@ public class App {
 
             numOfPlayer = Integer.parseInt(input);
             while (numOfPlayer > 4 || numOfPlayer < 2) {
-                System.out.println("Podano złą ilość userów");
+                System.out.println("Podano złą ilość graczy. Spróbuj jeszcze raz.");
                 System.out.println("Podaj liczbę graczy (2,3,4): ");
                 numOfPlayer = Integer.parseInt(scanner.nextLine());
             }
