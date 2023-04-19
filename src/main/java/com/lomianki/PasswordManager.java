@@ -7,8 +7,8 @@ import java.util.List;
 public class PasswordManager {
 
     private List<String> passwords;
-
-    public List<String> getPasswords() {
+    private String currentPassword;
+    List<String> getPasswords() {
         return passwords;
     }
 
@@ -22,10 +22,34 @@ public class PasswordManager {
         if (passwords.size() == 0)
             throw new IllegalStateException("Brak unikalnego hasła");
         int randomIndex = (int) Math.floor((Math.random() * passwords.size()));
-        String randomPassword = passwords.get(randomIndex);
+        currentPassword = passwords.get(randomIndex);
         passwords.remove(randomIndex);
-        return randomPassword;
+        return currentPassword;
     }
 
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public int guessLetter(char letter){
+        int count=0;
+        if (currentPassword.toLowerCase().contains(String. valueOf(letter).toLowerCase())) {
+            System.out.println("Zgadnięta :D)");
+            count= (int) currentPassword.chars().filter(ch -> ch == letter).count();
+        } else {
+            System.out.println("Taka litera nie występuje w haśle :(");
+        }
+        return count;
+    }
+
+    public boolean guessPassword(String inputPassword){
+        if (currentPassword.equalsIgnoreCase(inputPassword.trim())) {
+            System.out.println("Hasło odgadnięte :D)");
+            return true;
+        } else {
+            System.out.println("Niepoprawne hasło :(");
+            return false;
+        }
+    }
 
 }
