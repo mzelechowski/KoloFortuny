@@ -34,20 +34,24 @@ public class App {
             PasswordManager passwordManager = new PasswordManager();
             for (int i = 1; i <= ROUNDS; i++) {
                 System.out.println("Rozpoczęła się runda " + i);
-                String passwordToGuess = passwordManager.getRandomPassword();
-                System.out.println("\t\t\t" + passwordToGuess);
-                for (Player p : players) {
-                    System.out.println("Tura gracza " + p.getName());
-                    System.out.println("Podaj hasło lub literkę: ");
+                //String passwordToGuess = passwordManager.getRandomPassword();
+                passwordManager.getRandomPassword();
+                for (int j = 0; j < 7; j++) {
+                     for (Player p : players) {
+                        // System.out.println("\t\t\t" + passwordToGuess);
+                        System.out.println("\t\t\t" + passwordManager.getObscuredPassword());
+                        System.out.println("Tura gracza " + p.getName());
+                        System.out.println("Podaj hasło lub literkę: ");
 
-                    if ((input = scanner.nextLine()).equals("")) {
-                        System.out.println("Nie podałeś hasła ani literki. Rezygnujesz z tury.");
-                    } else if (input.length() == 1) {
-                        System.out.println("Zgaduję literę");
-                        passwordManager.guessLetter(input.charAt(0));
-                    } else {
-                        System.out.println("Zgaduję hasło");
-                        passwordManager.guessPassword(input);
+                        if ((input = scanner.nextLine()).equals("")) {
+                            System.out.println("Nie podałeś hasła ani literki. Rezygnujesz z tury.");
+                        } else if (input.length() == 1) {
+                            System.out.println("Zgaduję literę");
+                            passwordManager.guessLetter(input.charAt(0));
+                        } else {
+                            System.out.println("Zgaduję hasło");
+                            passwordManager.guessPassword(input);
+                        }
                     }
                 }
             }

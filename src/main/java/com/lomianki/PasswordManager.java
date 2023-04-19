@@ -1,5 +1,6 @@
 package com.lomianki;
 
+import javax.security.auth.callback.CallbackHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +9,8 @@ public class PasswordManager {
 
     private List<String> passwords;
     private String currentPassword;
+    private List<Character> correctGuesses = new ArrayList<>();
+
     List<String> getPasswords() {
         return passwords;
     }
@@ -24,25 +27,34 @@ public class PasswordManager {
         int randomIndex = (int) Math.floor((Math.random() * passwords.size()));
         currentPassword = passwords.get(randomIndex);
         passwords.remove(randomIndex);
+        this.correctGuesses.clear();
         return currentPassword;
     }
 
     public void setCurrentPassword(String currentPassword) {
         this.currentPassword = currentPassword;
+        this.correctGuesses.clear();
     }
 
-    public int guessLetter(char letter){
-        int count=0;
-        if (currentPassword.toLowerCase().contains(String. valueOf(letter).toLowerCase())) {
+    public void setCorrectGuesses(Character... args) {
+        for (Character c : args) {
+            this.correctGuesses.add(c);
+        }
+    }
+
+    public int guessLetter(char letter) {
+        int count = 0;
+        if (currentPassword.toLowerCase().contains(String.valueOf(letter).toLowerCase())) {
             System.out.println("Zgadnięta :D)");
-            count= (int) currentPassword.chars().filter(ch -> ch == letter).count();
+            this.correctGuesses.add(letter);
+            count = (int) currentPassword.chars().filter(ch -> ch == letter).count();
         } else {
             System.out.println("Taka litera nie występuje w haśle :(");
         }
         return count;
     }
 
-    public boolean guessPassword(String inputPassword){
+    public boolean guessPassword(String inputPassword) {
         if (currentPassword.equalsIgnoreCase(inputPassword.trim())) {
             System.out.println("Hasło odgadnięte :D)");
             return true;
@@ -50,6 +62,24 @@ public class PasswordManager {
             System.out.println("Niepoprawne hasło :(");
             return false;
         }
+    }
+
+    public String getObscuredPassword() {
+        StringBuilder obPwd = new StringBuilder();
+        obPwd.append(currentPassword);
+        for (int i = 0; i < obPwd.length(); i++) {
+            if (obPwd.charAt(i) != ',' && obPwd.charAt(i) != ' ')
+                obPwd.replace(i, i + 1, "-");
+        }
+        for (int i = 0; i < obPwd.length(); i++) {
+            for (Character c : correctGuesses) {
+                Character lowerC = Character.toLowerCase(c);
+                if (c.equals(currentPassword.toLowerCase().charAt(i))) {
+                    obPwd.replace(i, i + 1, currentPassword.substring(i, i + 1));
+                }
+            }
+        }
+        return obPwd.toString();
     }
 
 }

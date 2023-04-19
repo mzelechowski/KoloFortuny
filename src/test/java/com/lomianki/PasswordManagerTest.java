@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordManagerTest {
 
@@ -23,7 +23,7 @@ class PasswordManagerTest {
     void checkSizeListOfPassword() {
         //given
         PasswordManager manager = new PasswordManager();
-        int listSize=manager.getPasswords().size();
+        int listSize = manager.getPasswords().size();
 
         //when
         for (int i = 0; i < listSize; i++) {
@@ -33,11 +33,12 @@ class PasswordManagerTest {
         //then
         assertThrows(IllegalStateException.class, manager::getRandomPassword);
     }
+
     @Test
-    void checkGuessLetterIfReturnCorrectCountOfLetters(){
+    void checkGuessLetterIfReturnCorrectCountOfLetters() {
         //given
         PasswordManager manager = new PasswordManager();
-        char letter='ś';
+        char letter = 'ś';
 
         //when
         manager.setCurrentPassword("Gdzie kucharek sześć tam nie ma co jeść");
@@ -45,11 +46,12 @@ class PasswordManagerTest {
         //then
         assertThat(manager.guessLetter(letter), equalTo(2));
     }
+
     @Test
-    void checkGuessLetterIfReturnZeroOfLetters(){
+    void checkGuessLetterIfReturnZeroOfLetters() {
         //given
         PasswordManager manager = new PasswordManager();
-        char letter='x';
+        char letter = 'x';
 
         //when
         manager.setCurrentPassword("Gdzie kucharek sześć tam nie ma co jeść");
@@ -59,10 +61,10 @@ class PasswordManagerTest {
     }
 
     @Test
-    void checkGuessPasswordIfReturnTrue(){
+    void checkGuessPasswordIfReturnTrue() {
         //given
         PasswordManager manager = new PasswordManager();
-        String passwordToCompare="Gdzie kucharek sześć tam nie ma co jeść";
+        String passwordToCompare = "Gdzie kucharek sześć tam nie ma co jeść";
 
         //when
         manager.setCurrentPassword("Gdzie kucharek sześć tam nie ma co jeść");
@@ -72,16 +74,42 @@ class PasswordManagerTest {
     }
 
     @Test
-    void checkGuessPasswordIfReturnFalse(){
+    void checkGuessPasswordIfReturnFalse() {
         //given
         PasswordManager manager = new PasswordManager();
-        String passwordToCompare="Gdzie kucharek sześć tam nie ma co jeść";
+        String passwordToCompare = "Gdzie kucharek sześć tam nie ma co jeść";
 
         //when
         manager.setCurrentPassword("Gdzie kucharek sześć tam nie ma co jeść123");
 
         //then
         assertThat(manager.guessPassword(passwordToCompare), is(false));
+    }
+
+    @Test
+    void checkIfObscuredPasswordContainHiddenLetter() {
+        //given
+        PasswordManager manager = new PasswordManager();
+
+        //when
+        manager.setCurrentPassword("abcabc");
+        manager.setCorrectGuesses('a', 'b');
+
+        //then
+        assertTrue(manager.getObscuredPassword().contains("-"));
+    }
+
+    @Test
+    void checkIfObscuredPasswordNotContainHiddenLetter() {
+        //given
+        PasswordManager manager = new PasswordManager();
+
+        //when
+        manager.setCurrentPassword("abcabc");
+        manager.setCorrectGuesses('a', 'b', 'c');
+
+        //then
+        assertFalse(manager.getObscuredPassword().contains("-"));
     }
 
 }
