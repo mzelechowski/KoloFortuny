@@ -40,23 +40,14 @@ public class App {
                     System.out.println("Tura gracza " + p.getName());
                     System.out.println("Podaj hasło lub literkę: ");
 
-                    if((input = scanner.nextLine()).equals("")){
+                    if ((input = scanner.nextLine()).equals("")) {
                         System.out.println("Nie podałeś hasła ani literki. Rezygnujesz z tury.");
-                    }
-                    else if (input.length() == 1) {
+                    } else if (input.length() == 1) {
                         System.out.println("Zgaduję literę");
-                        if (passwordToGuess.toLowerCase().contains(input.toLowerCase())) {
-                            System.out.println("Zgadnięta :D)");
-                        } else {
-                            System.out.println("Taka litera nie występuje w haśle :(");
-                        }
+                        passwordManager.guessLetter(input.charAt(0));
                     } else {
                         System.out.println("Zgaduję hasło");
-                        if (passwordToGuess.equalsIgnoreCase(input.trim())) {
-                            System.out.println("Hasło odgadnięte :D)");
-                        } else {
-                            System.out.println("Niepoprawne hasło :(");
-                        }
+                        passwordManager.guessPassword(input);
                     }
                 }
             }
